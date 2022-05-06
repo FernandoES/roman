@@ -8,9 +8,8 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        RomanNumberConverter converter = new RomanNumberConverter();
-        List<String> x = converter.convertArabicToPseudoRoman(12);
-        String romanNumber = converter.convertPseudoRomanToRoman(x);
+        RomanToArabicConverter converter = new RomanToArabicConverter();
+        String romanNumber = converter.convertArabicToRoman(12);
         System.out.println(romanNumber);
     }
 }
