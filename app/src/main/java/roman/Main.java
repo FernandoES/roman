@@ -3,13 +3,15 @@
  */
 package roman;
 
-import java.util.List;
-
 public class Main {
 
     public static void main(String[] args) {
-        RomanToArabicConverter converter = new RomanToArabicConverter();
+        ArabicToRomanConverter converter = new ArabicToRomanConverter();
         String romanNumber = converter.convertArabicToRoman(12);
         System.out.println(romanNumber);
+
+        RomanToArabicConverter romanConverter = new RomanToArabicConverter();
+        int arabicNumber = romanConverter.convertRomanNumberToArabic("ciCXXIII");
+        System.out.println(arabicNumber);
     }
 }

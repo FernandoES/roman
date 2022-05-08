@@ -1,6 +1,5 @@
 package roman;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,61 +7,46 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class RomanToArabicConverter {
-    private final String[] pseudoCodeRoman = {"","s","ss","sss","sf","f","fs","fss","fsss","st"};
-    private final List<Map<String, String>> pseudToRomanRelation = new ArrayList<Map<String, String>>();
-    
-    public RomanToArabicConverter() {
-        initPseudoRomanRelation();
+
+    public RomanToArabicConverter(){
+        initRomanToArabicDigitRelation();
     }
 
-    public String convertArabicToRoman(int arabic) {
-        List<String> pseudoRoman = convertArabicToPseudoRoman(12);
-        return convertPseudoRomanToRoman(pseudoRoman);
+    private final Map<Character, Integer> romanToArabicDigitRelation = new HashMap<>();
+
+    public int convertRomanNumberToArabic(String roman) {
+        if(!allCharactersAreValid(roman)) {
+            System.out.println(Errors.unknownCharacterError);
+        }
+        List<Integer> digits = roman.chars().mapToObj(r -> romanToArabicDigitRelation.get((char)r)).collect(Collectors.toList());
+        return IntStream.range(0, digits.size()).mapToObj(index -> digits.get(index) * addOrSubstractDigit(digits, index)).reduce(0, (a,b) -> a + b);        
     }
 
-    public List<String> convertArabicToPseudoRoman(int arabic) {
-        IntStream  digits = Integer.toString(arabic).chars();
-        return digits.mapToObj(num -> (pseudoCodeRoman[Character.getNumericValue(num)])).collect(Collectors.toList());
+    private boolean allCharactersAreValid(String roman) {
+        return IntStream.range(0, roman.length()).mapToObj(roman::charAt).allMatch(romanToArabicDigitRelation::containsKey);
     }
 
-    public String convertPseudoRomanToRoman(List<String> pseudo) {
-        return IntStream.range(0, pseudo.size()).mapToObj(index -> (convertPseudoRomanSingleDigit(pseudo.get(index), pseudo.size() - index -1))).collect(Collectors.joining(""));
+    private int addOrSubstractDigit(List<Integer> digits, int index) {
+        if (digits.size() == index + 1) {
+            return 1;
+        }
+        return  digits.get(index) >= digits.get(index + 1) ?  1 : -1;
     }
 
-    private String convertPseudoRomanSingleDigit(String pseudoDigit, int position) {
-        return pseudoDigit.chars().mapToObj(letter -> pseudToRomanRelation.get(position).get(Character.toString(letter))).collect(Collectors.joining(""));
-    }
-
-    private void initPseudoRomanRelation() {
-        pseudToRomanRelation.add( new HashMap<String, String>() {{
-            put("s", "I");
-            put("f", "V");
-            put("t", "X");
-        }});
-        pseudToRomanRelation.add( new HashMap<String, String>() {{
-            put("s", "X");
-            put("f", "L");
-            put("t", "C");
-        }});
-        pseudToRomanRelation.add( new HashMap<String, String>() {{
-            put("s", "C");
-            put("f", "D");
-            put("t", "M");
-        }});
-        pseudToRomanRelation.add( new HashMap<String, String>() {{
-            put("s", "|I");
-            put("f", "|V");
-            put("t", "|X");
-        }});
-        pseudToRomanRelation.add( new HashMap<String, String>() {{
-            put("s", "|X");
-            put("f", "|L");
-            put("t", "|C");
-        }});
-        pseudToRomanRelation.add( new HashMap<String, String>() {{
-            put("s", "|C");
-            put("f", "|D");
-            put("t", "|M");
-        }});
+    private void initRomanToArabicDigitRelation() {
+            romanToArabicDigitRelation.put( 'I', 1);
+            romanToArabicDigitRelation.put('V', 5);
+            romanToArabicDigitRelation.put('X', 10);
+            romanToArabicDigitRelation.put('L', 50);
+            romanToArabicDigitRelation.put('C', 100);
+            romanToArabicDigitRelation.put('D', 500);
+            romanToArabicDigitRelation.put('M', 1000);
+            romanToArabicDigitRelation.put('i', 1000);
+            romanToArabicDigitRelation.put('v', 5000);
+            romanToArabicDigitRelation.put('x', 10000);
+            romanToArabicDigitRelation.put('l', 50000);
+            romanToArabicDigitRelation.put('c', 100000);
+            romanToArabicDigitRelation.put('d', 500000);
+            romanToArabicDigitRelation.put('m', 1000000);
     }
 }
