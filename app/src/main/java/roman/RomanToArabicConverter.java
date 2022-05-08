@@ -15,15 +15,9 @@ public class RomanToArabicConverter {
     private final Map<Character, Integer> romanToArabicDigitRelation = new HashMap<>();
 
     public int convertRomanNumberToArabic(String roman) {
-        if(!allCharactersAreValid(roman)) {
-            System.out.println(Errors.unknownCharacterError);
-        }
+        
         List<Integer> digits = roman.chars().mapToObj(r -> romanToArabicDigitRelation.get((char)r)).collect(Collectors.toList());
         return IntStream.range(0, digits.size()).mapToObj(index -> digits.get(index) * addOrSubstractDigit(digits, index)).reduce(0, (a,b) -> a + b);        
-    }
-
-    private boolean allCharactersAreValid(String roman) {
-        return IntStream.range(0, roman.length()).mapToObj(roman::charAt).allMatch(romanToArabicDigitRelation::containsKey);
     }
 
     private int addOrSubstractDigit(List<Integer> digits, int index) {

@@ -1,12 +1,16 @@
 package roman;
 
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class UserInteractor {
 
     public enum Selection {
         A,R
     }
+
+    public static String[] romanLetters = {"I", "V", "X", "L", "C", "D", "M", "i", "v", "x", "l", "c", "d", "m"};
 
     public static Selection getConversionSelection() {
         Scanner sc = new Scanner(System.in);
@@ -26,6 +30,9 @@ public class UserInteractor {
         Scanner sc = new Scanner(System.in);
         System.out.print("Please introduce the arabic number you want to convert");
         int response = sc.nextInt();
+        if(checkARabicNumberErrors(response)) {
+            return getArabicNumberToConvert();
+        }
         return response;
     }
 
@@ -33,6 +40,26 @@ public class UserInteractor {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please introduce the roman number you want to convert");
         String response = sc.nextLine().trim();
+        if(!allCharactersAreValid(response)) {
+            System.out.println(Errors.unknownCharacterError);
+        }
         return response;
+    }
+
+    private static boolean checkARabicNumberErrors(int arabic) {
+        if (arabic < 1) {
+            System.err.println(Errors.smallerThanOneNotAllowed);
+            return false;
+        }
+        if (arabic >= 10000000) {
+            System.err.print(Errors.tenMillionOrBigger);
+            return false;
+        }
+        return true;
+    }
+
+    
+    private static boolean allCharactersAreValid(String roman) {
+        return IntStream.range(0, roman.length()).mapToObj(roman::charAt).allMatch(r -> Arrays.asList(romanLetters).contains(r.toString()));
     }
 }

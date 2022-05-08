@@ -16,9 +16,6 @@ public class ArabicToRomanConverter {
     }
 
     public String convertArabicToRoman(int arabic) {
-        if(!checkErrors(arabic)){
-            return "";
-        }
         List<String> pseudoRoman = convertArabicToPseudoRoman(arabic);
         return convertPseudoRomanToRoman(pseudoRoman);
     }
@@ -34,18 +31,6 @@ public class ArabicToRomanConverter {
 
     private String convertPseudoRomanSingleDigit(String pseudoDigit, int position) {
         return pseudoDigit.chars().mapToObj(letter -> pseudToRomanRelation.get(position).get(Character.toString(letter))).collect(Collectors.joining(""));
-    }
-
-    private boolean checkErrors(int arabic) {
-        if (arabic < 1) {
-            System.err.println(Errors.smallerThanOneNotAllowed);
-            return false;
-        }
-        if (arabic >= 10000000) {
-            System.err.print(Errors.tenMillionOrBigger);
-            return false;
-        }
-        return true;
     }
 
     private void initPseudoRomanRelation() {
