@@ -12,13 +12,13 @@ public class Main {
             int arabic =UserInteractor.getArabicNumberToConvert();
             ArabicToRomanConverter converter = new ArabicToRomanConverter();
             String romanNumber = converter.convertArabicToRoman(arabic);
-            System.out.println(romanNumber);
+            System.out.println("Roman conversion of the number: " + romanNumber);
         }
         else {
             String roman = UserInteractor.getRomanNumberToConvert();
             RomanToArabicConverter romanConverter = new RomanToArabicConverter();
             int arabicNumber = romanConverter.convertRomanNumberToArabic(roman);
-            System.out.println(arabicNumber);
+            System.out.println("Arabic conversion of the number: " + arabicNumber);
         }
     }
 }

@@ -14,35 +14,52 @@ public class UserInteractor {
 
     public static Selection getConversionSelection() {
         Scanner sc = new Scanner(System.in);
-        System.out.print("If you want to convert from arabic to roman type A, otherwise type R");  
-        String response = sc.nextLine().trim().toUpperCase();
-        if ( "A".equals(response)) {
-            return Selection.A;
+        String response = "A";
+        System.out.println("If you want to convert from arabic to roman type A, otherwise type R");  
+        if (sc.hasNextLine()){
+            response = sc.nextLine().trim().toUpperCase();
         }
-        if( "R".equals(response)) {
-            return Selection.R;
-        }
-        System.out.println("The response is not valid, please type A or R");
-        return getConversionSelection();
+            if ( "A".equals(response)) {
+                return Selection.A;
+            }
+            if( "R".equals(response)) {
+                return Selection.R;
+            }
+            System.out.println("The response \"" + response + "\" is not valid, please type A or R");
+            return getConversionSelection();
+        
     }
 
     public static int getArabicNumberToConvert() {
+        int response = 0;
+        try {
         Scanner sc = new Scanner(System.in);
-        System.out.print("Please introduce the arabic number you want to convert");
-        int response = sc.nextInt();
-        if(checkARabicNumberErrors(response)) {
-            return getArabicNumberToConvert();
+        System.out.println("Please introduce the arabic number you want to convert");
+        if(sc.hasNext()){
+        response = sc.nextInt();
         }
+        }
+        catch(Exception e) {
+            System.err.println("Input incorrect: " + e);
+        }
+            if(!checkARabicNumberErrors(response)) {
+                return getArabicNumberToConvert();
+            }
+            System.out.println("Arabic number introduced: "+ response);
         return response;
     }
 
     public static String getRomanNumberToConvert() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Please introduce the roman number you want to convert");
-        String response = sc.nextLine().trim();
+        String response = "";
+        System.out.println("Please introduce the roman number you want to convert");        
+        if(sc.hasNextLine()){
+        response = sc.nextLine().trim();
         if(!allCharactersAreValid(response)) {
             System.out.println(Errors.unknownCharacterError);
         }
+    }
+    System.out.println("Roman number introduced: "+ response);
         return response;
     }
 
@@ -52,7 +69,7 @@ public class UserInteractor {
             return false;
         }
         if (arabic >= 10000000) {
-            System.err.print(Errors.tenMillionOrBigger);
+            System.err.println(Errors.tenMillionOrBigger);
             return false;
         }
         return true;
