@@ -42,7 +42,7 @@ public class UserInteractor {
         catch(Exception e) {
             System.err.println("Input incorrect: " + e);
         }
-            if(!checkARabicNumberErrors(response)) {
+            if(!checkArabicNumberErrors(response)) {
                 return getArabicNumberToConvert();
             }
             System.out.println("Arabic number introduced: "+ response);
@@ -63,7 +63,7 @@ public class UserInteractor {
         return response;
     }
 
-    private static boolean checkARabicNumberErrors(int arabic) {
+    private static boolean checkArabicNumberErrors(int arabic) {
         if (arabic < 1) {
             System.err.println(Errors.smallerThanOneNotAllowed);
             return false;
